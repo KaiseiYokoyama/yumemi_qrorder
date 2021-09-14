@@ -15,17 +15,17 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            // メニューを提供する店舗
             $table->foreignId('restaurant_id')
+                ->comment('メニューを提供する店舗')
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            // メニューの名前
-            $table->string('name');
-            // メニューの価格
-            $table->unsignedInteger('price');
-            // メニューの画像のURL
-            $table->string('image_url');
+            $table->string('name')
+                ->comment('メニューの名前');
+            $table->unsignedInteger('price')
+                ->comment('メニューの価格');
+            $table->string('image_url')
+                ->comment('メニューの画像のURL');
             $table->timestamps();
         });
     }

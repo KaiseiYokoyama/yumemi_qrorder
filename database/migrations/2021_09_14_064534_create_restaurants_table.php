@@ -15,12 +15,12 @@ class CreateRestaurantsTable extends Migration
     {
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
-            // 店舗名
-            $table->string('name');
-            // 課金が切れる日時
-            $table->date('expired_date');
-            // hash化したパスワード
-            $table->string('pass_hash');
+            $table->string('name')
+                ->comment('店舗名');
+            $table->date('expired_date')
+                ->comment('課金が切れる日時');
+            $table->string('pass_hash')
+                ->comment('hash化したパスワード');
             $table->timestamps();
         });
     }

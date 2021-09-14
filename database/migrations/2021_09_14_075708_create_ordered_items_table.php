@@ -15,19 +15,18 @@ class CreateOrderedItemsTable extends Migration
     {
         Schema::create('ordered_items', function (Blueprint $table) {
             $table->id();
-            // 注文された料理の種類（メニュー）
             $table->foreignId('menu_id')
+                ->comment('注文された料理の種類（メニュー）')
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            // この料理を頼んだお客さんの一団
             $table->foreignId('party_id')
+                ->comment('この料理を頼んだお客さんの一団')
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            // 注文確定状態かどうか
-            // falseの場合、まだカゴに入っている
-            $table->boolean('is_draft');
+            $table->boolean('is_draft')
+                ->comment('注文確定状態かどうか falseの場合、まだカゴに入っている');
             $table->timestamps();
         });
     }

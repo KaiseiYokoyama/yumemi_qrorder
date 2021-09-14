@@ -15,18 +15,16 @@ class CreatePartiesTable extends Migration
     {
         Schema::create('parties', function (Blueprint $table) {
             $table->id();
-            // お客さんの一団を受け入れる店舗
             $table->foreignId('restaurant_id')
+                ->comment('お客さんの一団を受け入れる店舗')
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            // お客さんの一団の状態
-            // 0: pending 初期状態
-            // 1: waiting 会計待ち
-            // 2: accounted 会計済み
-            $table->integer('state');
-            // お客さんの一団に割り当てられたUUID。QRコードの元になる。
-            $table->uuid('uuid')->unique();
+            $table->integer('state')
+                ->comment('お客さんの一団の状態 0: pending 初期状態, 1: waiting 会計待ち, 2: accounted 会計済み');
+            $table->uuid('uuid')
+                ->comment('お客さんの一団に割り当てられたUUID QRコード/cookieの元になる')
+                ->unique();
             $table->timestamps();
         });
     }
