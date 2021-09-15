@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class MenuTest extends TestCase
@@ -47,5 +48,36 @@ class MenuTest extends TestCase
         $menus = Menu::query()->where('restaurant_id', $party->restaurant_id)
             ->get();
         $response->assertSimilarJson($menus->jsonSerialize());
+    }
+
+    public function test_メニューを追加する_追加したら()
+    {
+        $party = Party::query()->find(1);
+        $uuid = $party->value('uuid');
+        $cookie = ['session_secret' => $uuid];
+
+        $json = [
+            'name' => 'ハンバーグ',
+            'price' => '660',
+            'image_url' => 'https://pbs.twimg.com/media/EsK3YCMVgAUJ2yb?format=jpg&name=large'
+        ];
+        // cookieは暗号化しない
+        $response = $this->call(
+            'post',
+            '/api/menu',
+            [],
+            $cookie,
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json',
+            ],
+            json_encode($json)
+        );
+
+        // HTTP status 201 created
+        $response->assertStatus(Response::HTTP_CREATED);
+
+        $response->assertJson($json);
     }
 }
