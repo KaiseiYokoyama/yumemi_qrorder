@@ -29,4 +29,30 @@ class MenuController extends Controller
 
         return $menus;
     }
+
+    /**
+     * 新たなメニューを格納する
+     */
+    public function store(Request $request) {
+        // TODO: 店員さんであることの認証
+
+        $session_secret = $request->cookie('session_secret');
+        $party = Party::query()
+            ->where('uuid', $session_secret)
+            ->first();
+
+        // JSONであることを確認
+        if (!$request->expectsJson()) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST);
+        }
+
+        $new_menu = new Menu;
+        $new_menu->restaurant_id = $party->restaurant_id;
+        $new_menu->name = $request->input('name');
+        $new_menu->price = $request->input('price');
+        $new_menu->image_url = $request->input('image_url');
+        $new_menu->save();
+
+        return $new_menu;
+    }
 }

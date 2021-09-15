@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'getAll']);
+Route::post('/menu', [\App\Http\Controllers\MenuController::class, 'store']);
