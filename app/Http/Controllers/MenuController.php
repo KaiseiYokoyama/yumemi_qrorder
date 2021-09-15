@@ -23,11 +23,6 @@ class MenuController extends Controller
             ->where('uuid', $session_secret)
             ->first();
 
-        if ($party == null) {
-            throw new HttpException(Response::HTTP_FORBIDDEN);
-        }
-
-
         $model_query = Menu::query()
             ->where('restaurant_id', $party->restaurant_id);
         $menus = $model_query->get();
