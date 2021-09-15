@@ -19,5 +19,9 @@ jobs:
           SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
         with:
           channel: 'intern_k_yokoyama_github'
-          user-name: 'Github Actions to Slack'
-          user-icon: 'https://github.com/actions.png?size=48'
+          subscribe-pulls: true
+          subscribe-issues: true
+          subscribe-reviews: true
+          subscribe-pull-comments: true
+          subscribe-issue-comments: true
+          threading-comments: true
