@@ -15,9 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: hkusu/slack-integration@beta
-        env:
-          SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
         with:
+          slack-token: ${{ secrets.SLACK_APP_TOKEN }}
           channel: 'intern_k_yokoyama_github'
           subscribe-pulls: true
           subscribe-issues: true
