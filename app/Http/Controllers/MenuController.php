@@ -29,7 +29,7 @@ class MenuController extends Controller
 
 
         $model_query = Menu::query()
-            ->where('restaurant_id', $party->value('restaurant_id'));
+            ->where('restaurant_id', $party->restaurant_id);
         $menus = $model_query->get();
 
         return $menus;

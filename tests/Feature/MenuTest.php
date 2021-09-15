@@ -44,7 +44,7 @@ class MenuTest extends TestCase
         $response->assertStatus(200);
 
         // 返答したデータがあっているかどうか
-        $menus = Menu::query()->where('restaurant_id', $party->value('restaurant_id'))
+        $menus = Menu::query()->where('restaurant_id', $party->restaurant_id)
             ->get();
         $response->assertSimilarJson($menus->jsonSerialize());
     }
