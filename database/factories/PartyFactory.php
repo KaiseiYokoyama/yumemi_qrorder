@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Party;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PartyFactory extends Factory
@@ -22,7 +23,7 @@ class PartyFactory extends Factory
     public function definition()
     {
         return [
-            'restaurant_id' => 0,
+            'restaurant_id' => $this->faker->numberBetween(1,3),
             'state' => 0,
             'uuid' => $this->faker->unique()->uuid(),
         ];
