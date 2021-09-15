@@ -24,7 +24,7 @@ class Authorise
             ->where('uuid', $session_secret)
             ->first();
 
-        if ($party == null) {
+        if (is_null($party)) {
             throw new HttpException(Response::HTTP_FORBIDDEN);
         }
 
