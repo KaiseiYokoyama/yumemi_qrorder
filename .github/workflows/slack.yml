@@ -1,0 +1,7 @@
+- uses: hkusu/slack-post-action@v1
+  env:
+    SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+  with:
+    channel: 'intern_k_yokoyama_github'
+    user-name: 'Github Actions to Slack'
+    user-icon: 'https://github.com/actions.png?size=48'
