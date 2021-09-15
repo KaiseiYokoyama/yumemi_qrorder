@@ -14,7 +14,7 @@ class MenuController extends Controller
     // TODO: リソースコントローラを使ってリファクタリング
 
     /**
-     *
+     * 認証されたお客さんに、滞在している店のメニュー一覧を提供する
      */
     public function getAll(Request $request): Collection
     {
