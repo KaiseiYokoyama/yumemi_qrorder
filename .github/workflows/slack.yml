@@ -14,7 +14,7 @@ jobs:
   slack-notification:
     runs-on: ubuntu-latest
     steps:
-      - uses: hkusu/slack-post-action@beta
+      - uses: hkusu/slack-integration@beta
         env:
           SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
         with:
