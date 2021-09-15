@@ -22,7 +22,10 @@ class MenuFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'restaurant_id' => 0,
+            'name' => $this->faker->name(),
+            'price' => $this->faker->numberBetween(0, 1000),
+            'image_url' => $this->faker->imageUrl()
         ];
     }
 }
