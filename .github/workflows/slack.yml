@@ -1,7 +1,23 @@
-- uses: hkusu/slack-post-action@v1
-  env:
-    SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
-  with:
-    channel: 'intern_k_yokoyama_github'
-    user-name: 'Github Actions to Slack'
-    user-icon: 'https://github.com/actions.png?size=48'
+name: Slack Notification
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+  issues:
+    types: [opened, reopened, closed]
+  pull_request_review:
+    types: [submitted]
+  issue_comment:
+    types: [created]
+
+jobs:
+  slack-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/slack-post-action@v1
+        env:
+          SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+        with:
+          channel: 'intern_k_yokoyama_github'
+          user-name: 'Github Actions to Slack'
+          user-icon: 'https://github.com/actions.png?size=48'
