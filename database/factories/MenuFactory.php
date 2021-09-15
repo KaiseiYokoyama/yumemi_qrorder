@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Menu;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MenuFactory extends Factory
@@ -21,8 +22,9 @@ class MenuFactory extends Factory
      */
     public function definition()
     {
+        $restaurant_ids = Restaurant::all()->pluck('id');
         return [
-            'restaurant_id' => $this->faker->numberBetween(1,3),
+            'restaurant_id' => $this->faker->randomElement($restaurant_ids),
             'name' => $this->faker->name(),
             'price' => $this->faker->numberBetween(0, 1000),
             'image_url' => $this->faker->imageUrl()

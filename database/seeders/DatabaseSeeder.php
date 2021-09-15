@@ -8,7 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     * お勧めコマンド: 'sail artisan migrate:fresh --seed'
+     * お勧めコマンド: 'sail artisan migrate:refresh --seed'
      *
      * @return void
      */

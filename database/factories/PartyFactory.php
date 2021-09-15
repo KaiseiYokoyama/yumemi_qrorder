@@ -22,8 +22,9 @@ class PartyFactory extends Factory
      */
     public function definition()
     {
+        $restaurant_ids = Restaurant::all()->pluck('id');
         return [
-            'restaurant_id' => $this->faker->numberBetween(1,3),
+            'restaurant_id' => $this->faker->randomElement($restaurant_ids),
             'state' => 0,
             'uuid' => $this->faker->unique()->uuid(),
         ];
