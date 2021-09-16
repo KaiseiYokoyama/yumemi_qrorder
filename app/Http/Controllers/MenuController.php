@@ -14,6 +14,11 @@ class MenuController extends Controller
 {
     // TODO: リソースコントローラを使ってリファクタリング
 
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * 認証されたお客さんに、滞在している店のメニュー一覧を提供する
      */
