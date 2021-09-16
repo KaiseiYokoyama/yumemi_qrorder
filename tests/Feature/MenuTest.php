@@ -36,7 +36,7 @@ class MenuTest extends TestCase
     public function test_認可成功_200が返ってくる_店舗ごとに違ったメニューが帰ってくる()
     {
         $party = Party::query()->find(1);
-        $uuid = $party->value('uuid');
+        $uuid = $party->uuid;
         $cookie = ['session_secret' => $uuid];
         // cookieは暗号化しない
 //        $response = $this->call('get', '/api/menu', [], $cookie);
