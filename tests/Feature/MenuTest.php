@@ -76,6 +76,21 @@ class MenuTest extends TestCase
             ->assertJson(MenuTest::$new_menu);
     }
 
+    public function test_post_バリデーション違反_メニュー追加失敗() {
+        $party = Party::query()->find(1);
+        $uuid = $party->value('uuid');
+        $cookie = ['session_secret' => $uuid];
+
+        $new_menu = [
+            'name' => '追加できないハンバーグ',
+            'price' => '-100',
+            'image_url' => 'https://pbs.twimg.com/media/EsK3YCMVgAUJ2yb?format=jpg&name=large',
+        ];
+
+        $this->postJsonWithCookie('/api/menu', $cookie, $new_menu)
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // NOTE: TestCaseをextendした方がいいかも
     public function postJsonWithCookie($uri, $cookie, $data): TestResponse
     {
