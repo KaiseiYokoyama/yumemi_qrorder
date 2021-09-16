@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteMenuRequest;
 use App\Http\Requests\StoreMenuRequest;
 use App\Models\Menu;
 use App\Models\Party;
@@ -58,5 +59,35 @@ class MenuController extends Controller
         $new_menu->save();
 
         return $new_menu;
+    }
+
+    public function delete(DeleteMenuRequest $request)
+    {
+        // TODO: 店員さんの認証
+        $session_secret = $request->cookie('session_secret');
+        $party = Party::query()
+            ->where('uuid', $session_secret)
+            ->first();
+
+        // validate request
+        $validated = $request->validated();
+
+        $target_menu = Menu::query()->find($validated['id']);
+
+        // 指定されたidを持つメニューがない時
+        if (is_null($target_menu)) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($target_menu->restaurant_id === $party->restaurant_id) {
+            // メニューを削除
+            $target_menu->delete();
+            // 削除したメニューのレコードを返す
+            return $target_menu;
+        } else {
+            // 他店のメニューを削除しようとしていた時
+            // NOTE: 404の方が良い？（メニューの存在を漏らさない）
+            throw new HttpException(Response::HTTP_FORBIDDEN);
+        }
     }
 }
