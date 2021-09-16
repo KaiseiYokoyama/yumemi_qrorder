@@ -29,9 +29,7 @@ class MenuTest extends TestCase
     }
 
     /**
-     * session_secretの指定がない時は認可失敗になる
-     *
-     * @return void
+     * テスト成功：session_secretの指定がないので、GETもPOSTも認可失敗&403が返ってくる
      */
     public function test_get_post_認可失敗_403()
     {
@@ -44,7 +42,10 @@ class MenuTest extends TestCase
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    public function test_get_認可成功_店舗ごとに違ったメニューが帰ってくる_200()
+    /**
+     * テスト成功：食べにきた人の滞在しているお店の全てのメニューが返ってくる&200が返ってくる
+     */
+    public function test_get_認可成功_店舗ごとに違ったメニューが返ってくる_200()
     {
         $party = Party::query()->find(1);
         $uuid = $party->uuid;
@@ -61,10 +62,13 @@ class MenuTest extends TestCase
         $response->assertSimilarJson($menus->jsonSerialize());
     }
 
+    /**
+     * テスト成功：POSTしたメニューのレコードが返ってくる&200が返ってくる
+     */
     public function test_post_メニューを追加する_追加したメニューのレコードが帰ってくる_200()
     {
         $party = Party::query()->find(1);
-        $uuid = $party->value('uuid');
+        $uuid = $party->uuid;
         $cookie = ['session_secret' => $uuid];
 
         // cookieは暗号化しない
@@ -76,9 +80,12 @@ class MenuTest extends TestCase
             ->assertJson(MenuTest::$new_menu);
     }
 
+    /**
+     * テスト成功：422が返ってくる
+     */
     public function test_post_バリデーション違反_メニュー追加失敗_422() {
         $party = Party::query()->find(1);
-        $uuid = $party->value('uuid');
+        $uuid = $party->uuid;
         $cookie = ['session_secret' => $uuid];
 
         $new_menu = [

@@ -43,7 +43,7 @@ class MenuController extends Controller
             ->first();
 
         // validate request
-        $request->validated();
+        $validated = $request->validated();
 
         // JSONであることを確認
         if (!$request->expectsJson()) {
@@ -52,9 +52,9 @@ class MenuController extends Controller
 
         $new_menu = new Menu;
         $new_menu->restaurant_id = $party->restaurant_id;
-        $new_menu->name = $request->input('name');
-        $new_menu->price = $request->input('price');
-        $new_menu->image_url = $request->input('image_url');
+        $new_menu->name = $validated['name'];
+        $new_menu->price = $validated['price'];
+        $new_menu->image_url = $validated['image_url'];
         $new_menu->save();
 
         return $new_menu;
