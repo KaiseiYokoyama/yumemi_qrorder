@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMenuRequest;
 use App\Models\Menu;
 use App\Models\Party;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,13 +34,16 @@ class MenuController extends Controller
     /**
      * 新たなメニューを格納する
      */
-    public function store(Request $request) {
+    public function store(StoreMenuRequest $request) {
         // TODO: 店員さんであることの認証
 
         $session_secret = $request->cookie('session_secret');
         $party = Party::query()
             ->where('uuid', $session_secret)
             ->first();
+
+        // validate request
+        $request->validated();
 
         // JSONであることを確認
         if (!$request->expectsJson()) {

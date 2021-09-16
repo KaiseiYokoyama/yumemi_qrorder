@@ -13,7 +13,8 @@ class StoreMenuRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // TODO: 店員さんであることの認証
+        return true;
     }
 
     /**
@@ -24,7 +25,9 @@ class StoreMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string'],
+            'price' => ['required', 'integer', 'min:0'],
+            'image_url' => ['string']
         ];
     }
 }
