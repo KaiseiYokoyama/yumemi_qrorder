@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'getAll']);
 Route::post('/menu', [\App\Http\Controllers\MenuController::class, 'store']);
+Route::delete('/menu', [\App\Http\Controllers\MenuController::class, 'delete']);
