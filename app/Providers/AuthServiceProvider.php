@@ -30,7 +30,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Auth::viaRequest('session-secret', function (Request $request) {
             $session_secret = $request->cookie('session_secret');
-            var_dump($session_secret);
 
             return Party::query()
                 ->where('uuid', $session_secret)
