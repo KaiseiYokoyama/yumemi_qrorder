@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Party;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +28,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::viaRequest('session-secret', function (Request $request) {
+            $session_secret = $request->cookie('session_secret');
+
+            return Party::query()
+                ->where('uuid', $session_secret)
+                ->first()
+            ;
+        });
     }
 }
