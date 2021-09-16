@@ -39,10 +39,7 @@ class MenuTest extends TestCase
         $uuid = $party->uuid;
         $cookie = ['session_secret' => $uuid];
         // cookieは暗号化しない
-//        $response = $this->call('get', '/api/menu', [], $cookie);
-        // cookieを暗号化する
-        $response = $this->withCookies($cookie)
-            ->get('/api/menu');
+        $response = $this->call('get', '/api/menu', [], $cookie);
 
         // HTTP status 200
         $response->assertStatus(200);
