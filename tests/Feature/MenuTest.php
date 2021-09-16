@@ -33,7 +33,7 @@ class MenuTest extends TestCase
      *
      * @return void
      */
-    public function test_get_post_認可失敗_403が返ってくる()
+    public function test_get_post_認可失敗_403()
     {
         // GET
         $this->get('/api/menu')
@@ -44,7 +44,7 @@ class MenuTest extends TestCase
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
-    public function test_get_認可成功_200が返ってくる_店舗ごとに違ったメニューが帰ってくる()
+    public function test_get_認可成功_店舗ごとに違ったメニューが帰ってくる_200()
     {
         $party = Party::query()->find(1);
         $uuid = $party->uuid;
@@ -61,7 +61,7 @@ class MenuTest extends TestCase
         $response->assertSimilarJson($menus->jsonSerialize());
     }
 
-    public function test_post_メニューを追加する_追加したメニューのレコードが帰ってくる()
+    public function test_post_メニューを追加する_追加したメニューのレコードが帰ってくる_200()
     {
         $party = Party::query()->find(1);
         $uuid = $party->value('uuid');
@@ -76,7 +76,7 @@ class MenuTest extends TestCase
             ->assertJson(MenuTest::$new_menu);
     }
 
-    public function test_post_バリデーション違反_メニュー追加失敗() {
+    public function test_post_バリデーション違反_メニュー追加失敗_422() {
         $party = Party::query()->find(1);
         $uuid = $party->value('uuid');
         $cookie = ['session_secret' => $uuid];
