@@ -1,0 +1,56 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+      - 'fix/**'
+      - 'feature/**'
+  pull_request:
+    branches:
+      - master
+      - 'fix/**'
+      - 'feature/**'
+
+env:
+  DB_DATABASE: qrorder
+  DB_PASSWORD: password
+
+jobs:
+  laravel_test:
+    name: phpunit test
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0.19
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: cache vendor
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Copy .env
+        run: cp .env.example .env
+      - name: composer install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+      - name: composer dump autoload
+        run: composer dump-autoload
+      - name: generate key
+        run: php artisan key:generate --env=testing
+      - name: migrate
+        run: php artisan migrate
+      - name: test
+        run: php artisan test --without-tty

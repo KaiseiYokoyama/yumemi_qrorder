@@ -24,6 +24,9 @@ class MenuTest extends TestCase
      */
     public function test_get_post_delete_認可失敗_403()
     {
+        // TODO 店員さんの認証
+        self::markTestIncomplete();
+
         // GET
         $this->get('/api/menu')
             ->assertStatus(Response::HTTP_FORBIDDEN);
