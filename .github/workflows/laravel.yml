@@ -12,6 +12,10 @@ on:
       - 'fix/**'
       - 'feature/**'
 
+env:
+  DB_DATABASE: qrorder
+  DB_PASSWORD: password
+
 jobs:
   laravel_test:
     name: phpunit test
@@ -24,16 +28,8 @@ jobs:
           - 3306:3306
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: qrorder
-
-    env:
-      DB_CONNECTION: mysql
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      DB_DATABASE: qrorder
-      DB_USERNAME: root
-      DB_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
 
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +42,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
       - name: Copy .env
-        run: cp .env.gactions-test .env
+        run: cp .env.example .env
       - name: composer install
         if: steps.cache.outputs.cache-hit != 'true'
         run: composer install -n --prefer-dist
