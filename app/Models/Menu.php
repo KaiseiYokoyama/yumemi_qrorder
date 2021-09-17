@@ -17,4 +17,13 @@ class Menu extends Model
     protected $attributes = [
         'image_url' => null
     ];
+
+    protected $fillable = [
+        'restaurant_id',
+        'name',
+        'price',
+        'image_url',
+    ];
+
+    protected $table = 'menus';
 }
