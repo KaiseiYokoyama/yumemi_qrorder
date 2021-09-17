@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class Authorise
+/**
+ * 食べに来た人の認証を行うミドルウェア
+ */
+class AuthoriseCustomer
 {
     /**
      * Handle an incoming request.

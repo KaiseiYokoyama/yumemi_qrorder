@@ -18,5 +18,6 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'getAll']);
-Route::post('/menu', [\App\Http\Controllers\MenuController::class, 'store']);
+Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'getAll'])->middleware('auth.business');
+Route::post('/menu', [\App\Http\Controllers\MenuController::class, 'store'])->middleware('auth.business');
+Route::delete('/menu', [\App\Http\Controllers\MenuController::class, 'delete'])->middleware('auth.business');

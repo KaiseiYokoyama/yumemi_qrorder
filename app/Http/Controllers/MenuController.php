@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteMenuRequest;
 use App\Http\Requests\StoreMenuRequest;
 use App\Models\Menu;
 use App\Models\Party;
+use App\Services\ForbiddenException;
+use App\Services\MenuService;
+use App\Services\NotFoundException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,17 +19,15 @@ class MenuController extends Controller
     // TODO: リソースコントローラを使ってリファクタリング
 
     /**
-     * 認証されたお客さんに、滞在している店のメニュー一覧を提供する
+     * お店の人に、店のメニュー一覧を提供する
      */
     public function getAll(Request $request): Collection
     {
-        $session_secret = $request->cookie('session_secret');
-        $party = Party::query()
-            ->where('uuid', $session_secret)
-            ->first();
+        // TODO: 店員さんであることの認証
+        $dummyRestaurantId = 1;
 
         $model_query = Menu::query()
-            ->where('restaurant_id', $party->restaurant_id);
+            ->where('restaurant_id', $dummyRestaurantId);
         $menus = $model_query->get();
 
         return $menus;
@@ -34,29 +36,38 @@ class MenuController extends Controller
     /**
      * 新たなメニューを格納する
      */
-    public function store(StoreMenuRequest $request) {
+    public function store(StoreMenuRequest $request, MenuService $menuService) {
         // TODO: 店員さんであることの認証
-
-        $session_secret = $request->cookie('session_secret');
-        $party = Party::query()
-            ->where('uuid', $session_secret)
-            ->first();
+        $dummyRestaurantId = 1;
 
         // validate request
         $validated = $request->validated();
 
-        // JSONであることを確認
-        if (!$request->expectsJson()) {
+        return $menuService->addNewMenu(
+            $dummyRestaurantId,
+            $validated['name'],
+            $validated['price'],
+            $validated['image_url'],
+        );
+    }
+
+    public function delete(DeleteMenuRequest $request, MenuService $menuService)
+    {
+        // TODO: 店員さんの認証
+        $dummyRestaurantId = 1;
+
+        // validate request
+        $validated = $request->validated();
+
+        try {
+            return $menuService->deleteMenu($dummyRestaurantId, $validated['id']);
+        } catch (NotFoundException $e) {
+            // 指定されたidを持つメニューがない時
             throw new HttpException(Response::HTTP_BAD_REQUEST);
+        } catch (ForbiddenException $e) {
+            // 他店のメニューを削除しようとしていた時
+            // NOTE: 404の方が良い？（メニューの存在を漏らさない）
+            throw new HttpException(Response::HTTP_FORBIDDEN);
         }
-
-        $new_menu = new Menu;
-        $new_menu->restaurant_id = $party->restaurant_id;
-        $new_menu->name = $validated['name'];
-        $new_menu->price = $validated['price'];
-        $new_menu->image_url = $validated['image_url'];
-        $new_menu->save();
-
-        return $new_menu;
     }
 }
