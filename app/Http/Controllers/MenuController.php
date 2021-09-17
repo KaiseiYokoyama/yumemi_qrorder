@@ -6,7 +6,9 @@ use App\Http\Requests\DeleteMenuRequest;
 use App\Http\Requests\StoreMenuRequest;
 use App\Models\Menu;
 use App\Models\Party;
+use App\Services\ForbiddenException;
 use App\Services\MenuService;
+use App\Services\NotFoundException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,14 +36,14 @@ class MenuController extends Controller
     /**
      * 新たなメニューを格納する
      */
-    public function store(StoreMenuRequest $request) {
+    public function store(StoreMenuRequest $request, MenuService $menuService) {
         // TODO: 店員さんであることの認証
         $dummyRestaurantId = 1;
 
         // validate request
         $validated = $request->validated();
 
-        return MenuService::addNewMenu(
+        return $menuService->addNewMenu(
             $dummyRestaurantId,
             $validated['name'],
             $validated['price'],
@@ -49,7 +51,7 @@ class MenuController extends Controller
         );
     }
 
-    public function delete(DeleteMenuRequest $request)
+    public function delete(DeleteMenuRequest $request, MenuService $menuService)
     {
         // TODO: 店員さんの認証
         $dummyRestaurantId = 1;
@@ -57,19 +59,12 @@ class MenuController extends Controller
         // validate request
         $validated = $request->validated();
 
-        $target_menu = Menu::query()->find($validated['id']);
-
-        // 指定されたidを持つメニューがない時
-        if (is_null($target_menu)) {
+        try {
+            return $menuService->deleteMenu($dummyRestaurantId, $validated['id']);
+        } catch (NotFoundException $e) {
+            // 指定されたidを持つメニューがない時
             throw new HttpException(Response::HTTP_BAD_REQUEST);
-        }
-
-        if ($target_menu->restaurant_id === $dummyRestaurantId) {
-            // メニューを削除
-            $target_menu->delete();
-            // 削除したメニューのレコードを返す
-            return $target_menu;
-        } else {
+        } catch (ForbiddenException $e) {
             // 他店のメニューを削除しようとしていた時
             // NOTE: 404の方が良い？（メニューの存在を漏らさない）
             throw new HttpException(Response::HTTP_FORBIDDEN);
