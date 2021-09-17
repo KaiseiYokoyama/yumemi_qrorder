@@ -18,12 +18,6 @@ class MenuTest extends TestCase
         'image_url' => 'https://pbs.twimg.com/media/EsK3YCMVgAUJ2yb?format=jpg&name=large',
     ];
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->seed();
-    }
-
     /**
      * テスト成功：session_secretの指定がないので、GETもPOSTも認可失敗&403が返ってくる
      * AuthoriseBusinessの中身が未実装なので、このテストは成功しない
