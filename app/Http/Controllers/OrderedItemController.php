@@ -55,8 +55,6 @@ class OrderedItemController extends Controller
             return \response()->json([
                 'error' => 'Some ordered item is not found.'
             ], Response::HTTP_NOT_FOUND);
-        } catch (ForbiddenException $e) {
-            throw new HttpException(Response::HTTP_FORBIDDEN);
         }
     }
 }
