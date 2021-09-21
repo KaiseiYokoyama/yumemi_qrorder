@@ -25,8 +25,6 @@ class CreateOrderedItemsTable extends Migration
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->boolean('is_draft')
-                ->comment('注文確定状態かどうか falseの場合、まだカゴに入っている');
             $table->timestamps();
         });
     }

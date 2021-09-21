@@ -64,10 +64,6 @@ class MenuController extends Controller
         } catch (NotFoundException $e) {
             // 指定されたidを持つメニューがない時
             throw new HttpException(Response::HTTP_BAD_REQUEST);
-        } catch (ForbiddenException $e) {
-            // 他店のメニューを削除しようとしていた時
-            // NOTE: 404の方が良い？（メニューの存在を漏らさない）
-            throw new HttpException(Response::HTTP_FORBIDDEN);
         }
     }
 }
