@@ -22,4 +22,7 @@ Route::get('/menu', [\App\Http\Controllers\MenuController::class, 'getAll'])->mi
 Route::post('/menu', [\App\Http\Controllers\MenuController::class, 'store'])->middleware('auth.business');
 Route::delete('/menu', [\App\Http\Controllers\MenuController::class, 'delete'])->middleware('auth.business');
 Route::resource('/ordered_item', \App\Http\Controllers\OrderedItemController::class);
+Route::get('/order_check', [\App\Http\Controllers\OrderCheckController::class, 'index']);
+Route::post('/order_check', [\App\Http\Controllers\OrderCheckController::class, 'store']);
+Route::delete('/order_check', [\App\Http\Controllers\OrderCheckController::class, 'delete']);
 Route::resource('/menubook', \App\Http\Controllers\MenubookController::class);
