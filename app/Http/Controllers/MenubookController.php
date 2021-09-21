@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MenubookResource;
 use App\Models\Party;
 use App\Services\MenuService;
 use Illuminate\Http\Request;
@@ -22,6 +23,8 @@ class MenubookController extends Controller
         /* @var Party $party */
         $party = Auth::user();
 
-        return $service->getMenuByRestaurantId($party->restaurant_id);
+        return MenubookResource::collection(
+            $service->getMenuByRestaurantId($party->restaurant_id)
+        )->collection;
     }
 }
