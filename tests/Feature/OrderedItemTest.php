@@ -109,7 +109,7 @@ class OrderedItemTest extends CustomerTestCase
         ];
 
         $this->postJson('/api/ordered_item', $orderMenu)
-            ->assertStatus(Response::HTTP_BAD_REQUEST);
+            ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     /**
