@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Services\ForbiddenException;
+use App\Services\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -41,8 +42,20 @@ class Handler extends ExceptionHandler
             //
         });
 
+//        $this->renderable(function (ForbiddenException $e) {
+//            throw new HttpException(Response::HTTP_FORBIDDEN);
+//        });
+
         $this->renderable(function (ForbiddenException $e) {
-            throw new HttpException(Response::HTTP_FORBIDDEN);
+            return \response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_FORBIDDEN);
+        });
+
+        $this->renderable(function (NotFoundException $e) {
+            return \response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
         });
     }
 }
