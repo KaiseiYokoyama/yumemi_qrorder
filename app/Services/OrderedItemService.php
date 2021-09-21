@@ -23,7 +23,7 @@ class OrderedItemService
      * @param Party $party
      * @param array $menuIds
      */
-    public function addNewOrder(
+    public function addNewOrderedItems(
         Party $party,
         array $menuIds
     )

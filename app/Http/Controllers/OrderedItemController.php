@@ -45,7 +45,7 @@ class OrderedItemController extends Controller
         $validated = $request->validated();
 
         try {
-            $orderedItemRecords = $orderedItemService->addNewOrder(
+            $orderedItemRecords = $orderedItemService->addNewOrderedItems(
                 $party,
                 $validated['menu_ids']
             );
