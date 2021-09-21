@@ -28,7 +28,7 @@ class OrderedItemController extends Controller
         /* @var Party $party */
         $party = Auth::user();
 
-        return $orderedItemService->queryByPartyId($party->id);
+        return $orderedItemService->getOrderedByPartyId($party->id);
     }
 
     /**

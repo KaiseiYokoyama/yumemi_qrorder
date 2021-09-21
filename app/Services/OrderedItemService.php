@@ -8,7 +8,7 @@ use App\Models\Party;
 
 class OrderedItemService
 {
-    public function queryByPartyId(
+    public function getOrderedByPartyId(
         int $partyId
     )
     {
