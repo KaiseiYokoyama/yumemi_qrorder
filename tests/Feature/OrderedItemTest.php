@@ -59,19 +59,22 @@ class OrderedItemTest extends CustomerTestCase
     public function test_post_メニューを注文する_postしたordered_itemのレコードが返ってくる_201()
     {
         $restaurant = $this->party->restaurant_id;
-        $order = Menu::all()
+        $orderedMenu = Menu::all()
             ->where('restaurant_id', $restaurant)
             ->take(3);
 
-        $order = $order->pluck('id');
+        $orderedMenuIds = $orderedMenu->pluck('id');
+        var_dump($orderedMenuIds);
         $orderJSON = [
-            'menu_ids' => $order,
+            'menu_ids' => $orderedMenuIds,
         ];
 
         $request = $this->postJson('/api/ordered_item', $orderJSON);
 
         $orderedItems = OrderedItem::query()
-            ->whereIn('menu_id', $order)
+            ->whereIn('menu_id', $orderedMenuIds)
+            ->orderBy('id', 'desc')
+            ->take(count($orderedMenuIds))
             ->get();
 
         $request->assertStatus(Response::HTTP_CREATED)
