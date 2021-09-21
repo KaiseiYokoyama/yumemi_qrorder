@@ -51,4 +51,12 @@ class MenuService
             throw new ForbiddenException();
         }
     }
+
+    public function getMenuByRestaurantId(
+        int $restaurant_id
+    ) {
+        return Menu::query()
+            ->where('restaurant_id', $restaurant_id)
+            ->get();
+    }
 }
