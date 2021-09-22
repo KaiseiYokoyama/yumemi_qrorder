@@ -42,10 +42,6 @@ class Handler extends ExceptionHandler
             //
         });
 
-//        $this->renderable(function (ForbiddenException $e) {
-//            throw new HttpException(Response::HTTP_FORBIDDEN);
-//        });
-
         $this->renderable(function (ForbiddenException $e) {
             return \response()->json([
                 'error' => $e->getMessage(),

@@ -24,14 +24,6 @@ class OrderCheckController extends Controller
         return $service->getOrderedByRestaurantId($dummyRestaurantId);
     }
 
-//    /**
-//     * Show the form for creating a new resource.
-//     */
-//    public function create(CreateOrderByRestaurantRequest $request, OrderCheckService $service)
-//    {
-//        //
-//    }
-
     /**
      * 店舗内の食べる人に代わって注文を出す
      */
@@ -59,40 +51,6 @@ class OrderCheckController extends Controller
         }
     }
 
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param \Illuminate\Http\Request $request
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
-//
     /**
      * 店舗内の食べる人が出した注文を削除する
      */

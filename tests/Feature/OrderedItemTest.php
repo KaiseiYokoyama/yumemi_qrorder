@@ -64,7 +64,6 @@ class OrderedItemTest extends CustomerTestCase
             ->take(3);
 
         $orderedMenuIds = $orderedMenu->pluck('id');
-        var_dump($orderedMenuIds);
         $orderJSON = [
             'menu_ids' => $orderedMenuIds,
         ];
