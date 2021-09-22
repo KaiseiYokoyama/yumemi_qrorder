@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Menu;
 use App\Models\OrderedItem;
 use App\Models\Party;
+use App\Models\PartyState;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,7 @@ class OrderCheckService
     {
         $partyIds = Party::query()
             ->where('restaurant_id', $restaurantId)
-            ->where('state', 0)
+            ->where('state', PartyState::Pending)
             ->get()
             ->pluck('id');
         return OrderedItem::query()
